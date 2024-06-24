@@ -9,10 +9,31 @@
 <body>
 
 <div class="container py-4">
-    <a href="/" class="d-block mb-4"><img src="/logosiwbook.png" width="50%" style="width: 500px;" alt="SiwBook Logo"></a>
+    <a href="/" class="d-block mb-4"><img src="/Images/logosiwbook.png" width="50%" alt="SiwFood Logo"></a>
+
+
+    <div th:unless="${userDetails}" class="col-md-3 text-end">
+        <a href="/login"><button type="button" class="btn btn-outline-primary me-2" th:text="'Login'"></button></a>
+    </div>
+
+    <div th:unless="${userDetails}" class="col-md-3 text-end">
+        <a href="/register"><button type="button" class="btn btn-outline-primary me-2" th:text="'Registrati'"></button></a>
+    </div>
+
+
+    <h1 class="mb-4">Operazioni di Consultazione</h1>
+
+    <div class="mb-4">
+        <a href="/books" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Visualizza tutti i Libri</a>
+    </div>
 
 
 
+    <h1 class="mb-4">Operazioni Admin su Libri</h1>
+
+    <div class="mb-4">
+        <a href="/Admin/newBook" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Creazione nuovo Libro</a>
+    </div>
 
 </div>
 

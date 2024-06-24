@@ -4,6 +4,7 @@ package it.uniroma3.siw.siwbook.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,27 @@ public class User {
     @NotBlank
     private String surname;
 
+    @OneToMany
+    private List<Review> reviews;
+
+    @OneToMany
+    private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public long getId() {
         return id;
