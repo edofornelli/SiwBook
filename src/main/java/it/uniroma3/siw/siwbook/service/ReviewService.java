@@ -14,8 +14,16 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    public Review findById(Long id) {
+        return this.reviewRepository.findById(id).get();
+    }
+
     public void save(Review review) {
         this.reviewRepository.save(review);
     }
 
+
+    public void deleteReview(Long id) {
+        this.reviewRepository.deleteById(id);
+    }
 }

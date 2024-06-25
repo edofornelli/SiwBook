@@ -37,7 +37,7 @@
                         <div class="card w-100">
                             <div class="card-body">
                                 <h6 class="card-title">
-                                    <a th:href="@{'/review/' + ${review.id}}" th:text="${review.book.title + ' - ' + review.user}">Jerry Cane Delle Isole - Edoardo Fornelli</a>
+                                    <a th:href="@{'/review/' + ${review.id}}" th:text="${review.book.title + '- Recensito da: ' + review.user.name + ' ' + review.user.surname}">Jerry Cane Delle Isole - Edoardo Fornelli</a>
                                 </h6>
                             </div>
                         </div>

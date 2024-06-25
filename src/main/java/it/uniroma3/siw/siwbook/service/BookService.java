@@ -48,7 +48,6 @@ public class BookService {
 
         this.reviewService.save(review);
         this.userService.save(user);
-
         this.save(book);
     }
 

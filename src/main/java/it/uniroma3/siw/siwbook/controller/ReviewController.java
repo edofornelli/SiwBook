@@ -9,7 +9,6 @@ import it.uniroma3.siw.siwbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +27,30 @@ public class ReviewController {
     @Autowired
     private UserService userService;
 
+
+    @GetMapping ("/review/{id}")
+    public String getReview (@PathVariable("id") Long id, Model model) {
+        model.addAttribute("review", this.reviewService.findById(id));
+        return "review.html";
+    }
+
+
+    @GetMapping ("/User/removeReview/{id}")
+    public String deleteReview (@PathVariable("id") Long id, Model model) {
+        User user = this.reviewService.findById(id).getUser();
+        Book book = this.reviewService.findById(id).getBook();
+
+        book.getReviews().remove(this.reviewService.findById(id));
+        user.getReviews().remove(this.reviewService.findById(id));
+        this.userService.save(user);
+        this.bookService.save(book);
+
+        this.reviewService.deleteReview(id);
+        return "redirect:/user/" + user.getId();
+    }
+
+
+
     @GetMapping("/User/addReview/{id}")
     public String addReview (@PathVariable("id") Long id, Model model) {
         model.addAttribute("book", this.bookService.findById(id));
@@ -41,9 +64,6 @@ public class ReviewController {
 
         Book book = this.bookService.findById(id);
         User user = this.userService.findById(userId);
-
-        System.out.println(book.getAuthor());
-        System.out.println(user.getName());
 
         try {
             this.bookService.saveReviewToBook(user, book, testoRecensione);

@@ -10,10 +10,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Book book;
 
 

@@ -2,11 +2,9 @@ package it.uniroma3.siw.siwbook.controller;
 
 import it.uniroma3.siw.siwbook.model.Book;
 import it.uniroma3.siw.siwbook.model.Image;
-import it.uniroma3.siw.siwbook.model.Review;
-import it.uniroma3.siw.siwbook.model.User;
+
 import it.uniroma3.siw.siwbook.service.BookService;
-import it.uniroma3.siw.siwbook.service.ReviewService;
-import it.uniroma3.siw.siwbook.service.UserService;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
