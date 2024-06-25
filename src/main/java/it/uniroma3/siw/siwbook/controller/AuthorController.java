@@ -1,10 +1,19 @@
 package it.uniroma3.siw.siwbook.controller;
 
+import it.uniroma3.siw.siwbook.model.Author;
+import it.uniroma3.siw.siwbook.model.Book;
+import it.uniroma3.siw.siwbook.model.Image;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import it.uniroma3.siw.siwbook.service.AuthorService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 @Controller
@@ -17,6 +26,51 @@ public class AuthorController {
     public String showAuthors (Model model) {
         model.addAttribute("authors", this.authorService.findAll());
         return "authors.html";
+    }
+
+    @GetMapping("/author/{id}")
+    public String getBook(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("autore", this.authorService.findById(id));
+        model.addAttribute("libri", this.authorService.findById(id).getBooks());
+        return "author.html";
+    }
+
+    @GetMapping("/Admin/newAuthor")
+    public String newAuthor(Model model) {
+        model.addAttribute("author", new Author());
+        return "/Admin/formNewAuthor.html";
+    }
+
+
+    @PostMapping("/Admin/formNewAuthor")
+    public String newBook(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute("author") Author author, BindingResult bindingResult, Model model) {
+
+        // this.bookValidator.validate(book, bindingResult);
+
+        if(files==null) {
+            bindingResult.reject("image.null");
+        }
+
+        author.setImages(new ArrayList<>());
+
+        for (MultipartFile file : files) {
+            try {
+                Image immagine = new Image();
+                immagine.setFilename(file.getOriginalFilename());
+                immagine.setImageData(file.getBytes());
+                String format = immagine.getFormat();
+                if (!(format.equals("jpeg") || format.equals("png") || format.equals("jpg"))) {
+                    bindingResult.reject("image.formatNotSupported");
+                    continue;
+                }
+                author.getImages().add(immagine);
+            } catch (IOException ex) {
+                bindingResult.reject("image.readError");
+            }
+        }
+
+        this.authorService.save(author);
+        return "redirect:/author/" + author.getId();
     }
 
 }
