@@ -14,6 +14,13 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private BookService bookService;
+
+
     public Review findById(Long id) {
         return this.reviewRepository.findById(id).get();
     }
@@ -23,7 +30,17 @@ public class ReviewService {
     }
 
 
-    public void deleteReview(Long id) {
+    public void deleteById(Long id) {
+        User user = this.findById(id).getUser();
+        Book book = this.findById(id).getBook();
+
+        book.getReviews().remove(this.findById(id));
+        user.getReviews().remove(this.findById(id));
+        this.userService.save(user);
+        this.bookService.save(book);
+
         this.reviewRepository.deleteById(id);
     }
+
+
 }

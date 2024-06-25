@@ -5,8 +5,12 @@ import it.uniroma3.siw.siwbook.model.Book;
 import it.uniroma3.siw.siwbook.model.Review;
 import it.uniroma3.siw.siwbook.model.User;
 import it.uniroma3.siw.siwbook.repository.BookRepository;
+import it.uniroma3.siw.siwbook.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -15,7 +19,7 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private UserService userService;
@@ -33,8 +37,21 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public void deleteById(Long id) {
-        bookRepository.deleteById(id);
+    public void deleteById(Book book) {
+
+        List<Review> reviews = new ArrayList<>(book.getReviews());
+
+        for (Review review : reviews) {
+            User user = this.reviewRepository.findById(review.getId()).get().getUser();
+            book.getReviews().remove(review);
+            this.save(book);
+            user.getReviews().remove(review);
+            this.userService.save(user);
+            reviewRepository.deleteById(review.getId());
+        }
+
+        book.getAuthor().getBooks().remove(book);
+        bookRepository.deleteById(book.getId());
     }
 
     public void saveReviewToBook(User user , Book book, String text) {
@@ -46,7 +63,7 @@ public class BookService {
         book.getReviews().add(review);
         user.getReviews().add(review);
 
-        this.reviewService.save(review);
+        this.reviewRepository.save(review);
         this.userService.save(user);
         this.save(book);
     }

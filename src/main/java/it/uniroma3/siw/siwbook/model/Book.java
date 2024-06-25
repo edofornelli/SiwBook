@@ -20,7 +20,7 @@ public class Book {
     @NotBlank
     String title;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     public Author author;
 
     @NotNull

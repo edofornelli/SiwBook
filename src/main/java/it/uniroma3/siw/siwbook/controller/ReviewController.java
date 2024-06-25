@@ -38,14 +38,7 @@ public class ReviewController {
     @GetMapping ("/User/removeReview/{id}")
     public String deleteReview (@PathVariable("id") Long id, Model model) {
         User user = this.reviewService.findById(id).getUser();
-        Book book = this.reviewService.findById(id).getBook();
-
-        book.getReviews().remove(this.reviewService.findById(id));
-        user.getReviews().remove(this.reviewService.findById(id));
-        this.userService.save(user);
-        this.bookService.save(book);
-
-        this.reviewService.deleteReview(id);
+        this.reviewService.deleteById(id);
         return "redirect:/user/" + user.getId();
     }
 

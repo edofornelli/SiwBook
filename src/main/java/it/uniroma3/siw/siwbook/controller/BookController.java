@@ -83,6 +83,15 @@ public class BookController {
         return "redirect:/book/" + book.getId();
     }
 
+    @GetMapping("/Admin/deleteBook/{id}")
+    public String deleteLibro (@PathVariable("id") Long id, Model model) {
+        Book book = this.bookService.findById(id);
+        this.bookService.deleteById(book);
+
+        return "redirect:/books";
+    }
+
+
 
 }
 

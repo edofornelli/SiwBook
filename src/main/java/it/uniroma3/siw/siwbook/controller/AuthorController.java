@@ -3,6 +3,8 @@ package it.uniroma3.siw.siwbook.controller;
 import it.uniroma3.siw.siwbook.model.Author;
 import it.uniroma3.siw.siwbook.model.Book;
 import it.uniroma3.siw.siwbook.model.Image;
+import it.uniroma3.siw.siwbook.model.Review;
+import it.uniroma3.siw.siwbook.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
+    @Autowired
+    private BookService bookService;
+
     @GetMapping("/authors")
     public String showAuthors (Model model) {
         model.addAttribute("authors", this.authorService.findAll());
@@ -40,6 +45,27 @@ public class AuthorController {
         model.addAttribute("author", new Author());
         return "/Admin/formNewAuthor.html";
     }
+
+
+    @GetMapping("/Admin/addAuthor/{id}")
+    public String chooseAuthorForBook (@PathVariable("id") Long id, Model model) {
+        model.addAttribute("libro", this.bookService.findById(id));
+        model.addAttribute("autori", this.authorService.findAll());
+        return "/Admin/addAuthor.html";
+    }
+
+
+    @GetMapping("/Admin/addAuthor/{id}/{idAuthor}")
+    public String addAuthorToBook (@PathVariable("id") Long id, @PathVariable("idAuthor") Long idAuthor, Model model) {
+        Book book = this.bookService.findById(id);
+        Author author = this.authorService.findById(idAuthor);
+
+        this.authorService.addAuthortoBook(author, book);
+
+        return "redirect:/book/" + id;
+    }
+
+
 
 
     @PostMapping("/Admin/formNewAuthor")
