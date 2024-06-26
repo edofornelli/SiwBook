@@ -23,9 +23,12 @@
                             <a th:href="@{'/review/' + ${review.id}}" th:text="${review.book.title + '- Recensito da: ' + review.user.name + ' ' + review.user.surname}">Jerry Cane Delle Isole - Recensito da: Edoardo Fornelli</a>
                         </h6>
 
-                        <div class="d-grid gap-2" th:if="${review.user.id == credenziali.getUser().getId()}">
-                            <a th:href="@{'/User/removeReview/' + ${review.id}}" class="btn btn-danger btn-lg">Rimuovi questa recensione</a>
+                        <div class="d-grid gap-2" th:if="${credenziali != null}">
+                            <div class="d-grid gap-2" th:if="${review.user.id == credenziali.getUser().getId()}">
+                                <a th:href="@{'/User/removeReview/' + ${review.id}}" class="btn btn-danger btn-lg">Rimuovi questa recensione</a>
+                            </div>
                         </div>
+
 
                     </div>
 

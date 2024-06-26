@@ -1,5 +1,6 @@
 package it.uniroma3.siw.siwbook.controller;
 
+import it.uniroma3.siw.siwbook.controller.validator.BookValidator;
 import it.uniroma3.siw.siwbook.model.Book;
 import it.uniroma3.siw.siwbook.model.Image;
 
@@ -23,7 +24,8 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-
+    @Autowired
+    private BookValidator bookValidator;
 
     @GetMapping("/book/{id}")
     public String getBook(@PathVariable("id") Long id, Model model) {
@@ -55,8 +57,6 @@ public class BookController {
     @PostMapping("/Admin/formNewBook")
     public String newBook(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute("book") Book book, BindingResult bindingResult, Model model) {
 
-        // this.bookValidator.validate(book, bindingResult);
-
         if(files==null) {
             bindingResult.reject("image.null");
         }
@@ -77,6 +77,12 @@ public class BookController {
             } catch (IOException ex) {
                 bindingResult.reject("image.readError");
             }
+        }
+
+        this.bookValidator.validate(book, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "/Admin/formNewBook.html";
         }
 
         this.bookService.save(book);

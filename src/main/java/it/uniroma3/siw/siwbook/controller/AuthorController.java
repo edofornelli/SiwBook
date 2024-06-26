@@ -1,5 +1,6 @@
 package it.uniroma3.siw.siwbook.controller;
 
+import it.uniroma3.siw.siwbook.controller.validator.AuthorValidator;
 import it.uniroma3.siw.siwbook.model.Author;
 import it.uniroma3.siw.siwbook.model.Book;
 import it.uniroma3.siw.siwbook.model.Image;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 public class AuthorController {
 
     @Autowired
+    private AuthorValidator authorValidator;
+
+    @Autowired
     private AuthorService authorService;
 
     @Autowired
@@ -39,13 +43,6 @@ public class AuthorController {
         model.addAttribute("libri", this.authorService.findById(id).getBooks());
         return "author.html";
     }
-
-    @GetMapping("/Admin/newAuthor")
-    public String newAuthor(Model model) {
-        model.addAttribute("author", new Author());
-        return "/Admin/formNewAuthor.html";
-    }
-
 
     @GetMapping("/Admin/addAuthor/{id}")
     public String chooseAuthorForBook (@PathVariable("id") Long id, Model model) {
@@ -65,13 +62,16 @@ public class AuthorController {
         return "redirect:/book/" + id;
     }
 
-
+    @GetMapping("/Admin/newAuthor")
+    public String newAuthor(Model model) {
+        model.addAttribute("author", new Author());
+        return "/Admin/formNewAuthor.html";
+    }
 
 
     @PostMapping("/Admin/formNewAuthor")
     public String newBook(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute("author") Author author, BindingResult bindingResult, Model model) {
 
-        // this.bookValidator.validate(book, bindingResult);
 
         if(files==null) {
             bindingResult.reject("image.null");
@@ -93,6 +93,12 @@ public class AuthorController {
             } catch (IOException ex) {
                 bindingResult.reject("image.readError");
             }
+        }
+
+        this.authorValidator.validate(author, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "/Admin/formNewAuthor.html";
         }
 
         this.authorService.save(author);
