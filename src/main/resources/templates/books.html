@@ -25,7 +25,7 @@
                     <h5 class="card-title">
                         <a th:href="@{'/book' + '/' + ${book.id}}" th:text="${book.title}">Jerry Cane delle Isole</a>
                     </h5>
-                    <h6 class="card-subtitle mb-2 text-muted" th:text="${book.author.name + ' ' + book.author.surname}">Jack London</h6>
+                    <h6 class="card-subtitle mb-2 text-muted" th:if="${book.author != null}" th:text="${book.author.name + ' ' + book.author.surname}">Jack London</h6>
                 </div>
             </div>
         </div>
