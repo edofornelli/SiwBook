@@ -1,7 +1,27 @@
 Casi d'uso:
 
 UTENTE NON ISCRITTO:
+1) L'utente non iscritto può visualizzare la homepage del sito.
+2) L'utente non iscritto può visualizzare la pagina di login.
+3) L'utente non iscritto può visualizzare la pagina di registrazione.
+4) L'utente non iscritto può visualizzare la pagina di ricerca.
+5) L'utente non iscritto può visualizzare la pagina di lista dei libri
+6) L'utente non iscritto può visualizzare la pagina di dettaglio di un libro.
+5) L'utente non iscritto può visualizzare la pagina di lista degli autori
+7) L'utente non iscritto può visualizzare la pagina di dettaglio di un autore.
+8) L'utente non iscritto può visualizzare la pagina le recensioni di un libro
+9) L'utente non iscritto può visualizzare la pagina di dettaglio di una recensione.
+10) L'utente non iscritto può visualizzare la pagina dell'utente collegato a detta recensione.
 
-UTENTE ISCRITTO RUOLO GENERIC:
+
+UTENTE ISCRITTO RUOLO GENERIC (oltre a quelli già descritti per l'utente non iscritto):
+1) L'utente iscritto può recensire un libro.
+2) L'utente iscritto può cancellare una propria recensione (solo se propria).
+
 
 UTENTE AMMINISTRATORE RUOLO ADMIN:
+1) L'utente amministratore può effettuare tutte le operazioni degli utenti generici.
+2) L'utente amministratore può creare un libro.
+3) L'utente amministratore può cancellare un libro.
+4) L'utente amministratore può creare un autore.
+5) L'utente amministratore può associare un autore ad un libro.
