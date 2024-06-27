@@ -6,6 +6,14 @@
     <title>Specifiche del Libro - SiwBook</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            max-height: 35rem;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -18,11 +26,11 @@
                     <div class="carousel-inner">
                         <!-- First image -->
                         <div class="carousel-item active">
-                            <img class="d-block w-100" style="object-fit: cover; height: 35rem;" th:src="@{'data:image/'+${book.getFirstImage().getFormat()}+';base64,'+${book.getFirstImage().getBase64()}}" alt="First slide">
+                            <img class="d-block w-100" th:src="@{'data:image/'+${book.getFirstImage().getFormat()}+';base64,'+${book.getFirstImage().getBase64()}}" alt="First slide">
                         </div>
                         <!-- Other images -->
                         <div th:each="image, iterStat : ${book.getAllImagesWithoutFirst()}" class="carousel-item">
-                            <img class="d-block w-100" style="object-fit: cover; height: 35rem;" th:src="@{'data:image/'+${image.getFormat()}+';base64,'+${image.getBase64()}}" alt="Slide number [[${iterStat.index}]]">
+                            <img class="d-block w-100" th:src="@{'data:image/'+${image.getFormat()}+';base64,'+${image.getBase64()}}" alt="Slide number [[${iterStat.index}]]">
                         </div>
                     </div>
                 </div>
@@ -54,7 +62,7 @@
                 </div>
 
                 <div class="d-grid gap-2 col-6 mx-auto mt-5 mb-5">
-                      <a th:href="@{'/Admin/deleteBook' + '/' +${book.id}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Cancella Libro</a>
+                    <a th:href="@{'/Admin/deleteBook' + '/' +${book.id}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Cancella Libro</a>
                 </div>
 
             </div>

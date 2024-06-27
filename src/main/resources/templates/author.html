@@ -5,12 +5,19 @@
     <title>Autore</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            max-height: 35rem;
+        }
+    </style>
 </head>
 
 <body>
 <div class="container mt-5">
     <a href="/" class="d-block mb-4 text-center"><img src="/Images/logosiwbook.png" width="20%" alt="SiwBook Logo"></a>
-
 
     <div th:if="${autore}" class="mt-5">
         <div class="row justify-content-center">
@@ -19,16 +26,15 @@
                     <div class="carousel-inner">
                         <!-- First image -->
                         <div class="carousel-item active">
-                            <img class="d-block w-100" style="object-fit: cover; height: 35rem;" th:src="@{'data:image/'+${autore.getFirstImage().getFormat()}+';base64,'+${autore.getFirstImage().getBase64()}}" alt="First slide">
+                            <img class="d-block w-100" th:src="@{'data:image/'+${autore.getFirstImage().getFormat()}+';base64,'+${autore.getFirstImage().getBase64()}}" alt="First slide">
                         </div>
                         <!-- Other images -->
                         <div th:each="image, iterStat : ${autore.getAllImagesWithoutFirst()}" class="carousel-item">
-                            <img class="d-block w-100" style="object-fit: cover; height: 35rem;" th:src="@{'data:image/'+${image.getFormat()}+';base64,'+${image.getBase64()}}" alt="Slide number [[${iterStat.index}]]">
+                            <img class="d-block w-100" th:src="@{'data:image/'+${image.getFormat()}+';base64,'+${image.getBase64()}}" alt="Slide number [[${iterStat.index}]]">
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="col-md-8 text-center mt-3">
                 <h1 th:text="${autore.name + autore.surname}">Jack London</h1>
@@ -52,8 +58,6 @@
     <div th:unless="${book}"></div>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
-
 </html>
