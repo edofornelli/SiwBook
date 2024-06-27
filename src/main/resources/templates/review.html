@@ -47,7 +47,7 @@
     <a class="review-author" th:href="@{'/user/' + ${review.user.id}}" th:text="${review.user.name + review.user.surname}">Edoardo Fornelli</a>
 
     <div class="d-grid gap-2" th:if="${credenziali != null}">
-        <div class="d-grid gap-2" th:if="${review.user.id == credenziali.getUser().getId()}">
+        <div class="d-grid gap-2" th:if="${review.user.id == credenziali.getUser().getId() || credenziali.isAdmin()}">
             <a th:href="@{'/User/removeReview/' + ${review.id}}" class="btn btn-danger">Rimuovi questa recensione</a>
         </div>
     </div>
