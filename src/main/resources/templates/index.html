@@ -32,12 +32,12 @@
         <a href="/authors" class="btn btn-primary btn-lg">Visualizza tutti gli Autori</a>
     </div>
 
-    <h1 class="mb-4 text-center">Operazioni Admin su Libri</h1>
-    <div class="d-grid gap-2 mb-4">
+    <h1 th:if="${credenziali!=null && credenziali.isAdmin()}" class="mb-4 text-center">Operazioni Admin su Libri</h1>
+    <div th:if="${credenziali!=null && credenziali.isAdmin()}" class="d-grid gap-2 mb-4">
         <a href="/Admin/newBook" class="btn btn-primary btn-lg">Creazione nuovo Libro</a>
     </div>
 
-    <div class="d-grid gap-2 mb-4">
+    <div th:if="${credenziali!=null && credenziali.isAdmin()}" class="d-grid gap-2 mb-4">
         <a href="/Admin/newAuthor" class="btn btn-primary btn-lg">Creazione Autore</a>
     </div>
 

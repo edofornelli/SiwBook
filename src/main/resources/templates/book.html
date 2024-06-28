@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="d-grid gap-2 col-6 mx-auto mt-5 mb-5">
+                <div th:if="${credenziali!=null && credenziali.isAdmin()}" class="d-grid gap-2 col-6 mx-auto mt-5 mb-5">
                     <a th:href="@{'/Admin/addAuthor/' + ${book.id}}" class="btn btn-primary btn-lg">Aggiungi autore a Libro</a>
                 </div>
 
@@ -61,7 +61,7 @@
                     <a th:href="@{'/User/addReview/' + ${book.id}}" class="btn btn-primary btn-lg">Recensisci Libro</a>
                 </div>
 
-                <div class="d-grid gap-2 col-6 mx-auto mt-5 mb-5">
+                <div th:if="${credenziali!=null && credenziali.isAdmin()}" class="d-grid gap-2 col-6 mx-auto mt-5 mb-5">
                     <a th:href="@{'/Admin/deleteBook' + '/' +${book.id}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Cancella Libro</a>
                 </div>
 
