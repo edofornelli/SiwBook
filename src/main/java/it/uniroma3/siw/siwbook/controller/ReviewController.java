@@ -1,12 +1,15 @@
 package it.uniroma3.siw.siwbook.controller;
 
 import it.uniroma3.siw.siwbook.model.Book;
+import it.uniroma3.siw.siwbook.model.Credentials;
 import it.uniroma3.siw.siwbook.model.Review;
 import it.uniroma3.siw.siwbook.model.User;
 import it.uniroma3.siw.siwbook.service.BookService;
+import it.uniroma3.siw.siwbook.service.CredentialsService;
 import it.uniroma3.siw.siwbook.service.ReviewService;
-import it.uniroma3.siw.siwbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +28,7 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @Autowired
-    private UserService userService;
+    private CredentialsService credentialsService;
 
 
     @GetMapping ("/review/{id}")
@@ -37,9 +40,21 @@ public class ReviewController {
 
     @GetMapping ("/User/removeReview/{id}")
     public String deleteReview (@PathVariable("id") Long id, Model model) {
-        User user = this.reviewService.findById(id).getUser();
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+        User authenticatedUser = credentials.getUser();
+
+        User reviewUser = this.reviewService.findById(id).getUser();
+
+        if (!authenticatedUser.equals(reviewUser) && !credentials.isAdmin()){
+            model.addAttribute("error", "Non sei autorizzato a cancellare questa recensione");
+            return "/error.html";
+        }
+
         this.reviewService.deleteById(id);
-        return "redirect:/user/" + user.getId();
+
+        return "redirect:/user/" + reviewUser.getId();
     }
 
 
@@ -52,11 +67,14 @@ public class ReviewController {
         return "/User/formNewReview.html";
     }
 
-    @PostMapping("/User/formNewReview/{id}/{userId}")
-    public String addReviewToBook (@RequestParam("testo") String testoRecensione, @PathVariable("id") Long id, @PathVariable("userId") Long userId, Model model) {
+    @PostMapping("/User/formNewReview/{id}")
+    public String addReviewToBook (@RequestParam("testo") String testoRecensione, @PathVariable("id") Long id, Model model) {
 
         Book book = this.bookService.findById(id);
-        User user = this.userService.findById(userId);
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+        User user = credentials.getUser();
 
         try {
             this.bookService.saveReviewToBook(user, book, testoRecensione);

@@ -13,11 +13,12 @@
 
     <h3 class="text-center mb-4">Aggiungi la tua Recensione</h3>
 
-    <form th:action="@{'/User/formNewReview/' + ${book.id} + '/' + ${credenziali.getUser().getId()}}" method="POST">
+    <form th:action="@{'/User/formNewReview/' + ${book.id}}" method="POST">
         <div class="mb-3">
             <label for="testo" class="form-label">Recensione:</label>
             <textarea class="form-control" id="testo" name="testo" required rows="3"></textarea>
         </div>
+
 
         <div class="mb-3 text-center">
             <button type="submit" class="btn btn-primary">Conferma</button>
