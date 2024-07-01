@@ -20,6 +20,7 @@ public class Credentials {
     private long id;
 
     @NotBlank
+    @Column(nullable = false,unique = true)
     private String username;
 
     @NotBlank

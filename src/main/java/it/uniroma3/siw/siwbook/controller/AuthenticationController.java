@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwbook.controller;
 
 
+import it.uniroma3.siw.siwbook.controller.validator.CredentialsValidator;
 import it.uniroma3.siw.siwbook.model.Credentials;
 import it.uniroma3.siw.siwbook.model.User;
 import it.uniroma3.siw.siwbook.service.CredentialsService;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthenticationController {
+
+    @Autowired
+    private CredentialsValidator credentialsValidator;
 
     @Autowired
     private CredentialsService credentialsService;
@@ -61,8 +65,10 @@ public class AuthenticationController {
                                BindingResult credentialsBindingResult,
                                Model model) {
 
+        credentialsValidator.validate(credentials, credentialsBindingResult);
+
          if(!userBindingResult.hasErrors() && ! credentialsBindingResult.hasErrors()) {
-            userService.save(user);
+             userService.save(user);
             credentials.setUser(user);
 
             credentials.setRole(Credentials.GENERIC_ROLE);

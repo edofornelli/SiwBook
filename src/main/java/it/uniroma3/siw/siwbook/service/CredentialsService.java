@@ -31,4 +31,8 @@ public class CredentialsService {
         return credentialsRepository.save(credentials);
     }
 
+    public boolean isUsernameTaken(String username){
+        return credentialsRepository.existsByUsername(username);
+    }
+
 }
